@@ -9,12 +9,10 @@ import (
   _ "github.com/heroku/x/hmetrics/onload"
   "database/sql"
   _ "github.com/lib/pq"
+  "models"
 )
 
-type Test struct{
-  Id int `json:"id"`
-  Content string `json:"content"`
-}
+
 
 func main() {
   port := os.Getenv("PORT")
