@@ -4,6 +4,8 @@ github.com/gin-gonic/gin v0.0.0-20150626140855-4cc2de6207f4 h1:ufr+93X0/9xTNvObf
 github.com/gin-gonic/gin v0.0.0-20150626140855-4cc2de6207f4/go.mod h1:7cKuhb5qV2ggCFctp2fJQ+ErvciLZrIeoOSOm6mUr7Y=
 github.com/heroku/x v0.0.0-20171004170240-705849e307dd h1:zn29UrzyUeQgqxBGXIwQqQJf75IiK4aeCtO5q1V2Vyo=
 github.com/heroku/x v0.0.0-20171004170240-705849e307dd/go.mod h1:opmAyjmIGn9/Y+9Nia6eIaktIXIoMhhFXEFbHLMsX3Y=
+github.com/lib/pq v1.2.0 h1:LXpIM/LZ5xGFhOpXAQUIMM1HdyqzVYM13zNdjCEEcA0=
+github.com/lib/pq v1.2.0/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
 github.com/manucorporat/sse v0.0.0-20150604091100-c142f0f1baea h1:3she1OMibtVtGiZSF65Cfi5ijRb+pAKXmstffNs5i+4=
 github.com/manucorporat/sse v0.0.0-20150604091100-c142f0f1baea/go.mod h1:zUx1mhth20V3VKgL5jbd1BSQcW4Fy6Qs4PZvQwRFwzM=
 github.com/mattn/go-colorable v0.0.0-20150625154642-40e4aedc8fab h1:3lgod/2wdM8WaJNBe16LkFmrz2XkXbH2YhbRWh38W9U=
