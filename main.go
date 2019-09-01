@@ -10,8 +10,6 @@ import (
   "database/sql"
   _ "github.com/lib/pq"
   "controller"
-  
-  
 )
 
 type Test struct{
@@ -43,7 +41,10 @@ func main() {
   router.GET("/test", test)
   
   router.GET("/db", dbFunc(db))
-  router.GET("/db_controller", dbFunc(db))
+  
+  controller := test.Controller{}
+  
+  router.GET("/db_controller", controller.dbFunc(db))
 
   router.Run(":" + port)
 }
