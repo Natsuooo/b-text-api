@@ -9,7 +9,6 @@ import (
   _ "github.com/heroku/x/hmetrics/onload"
   "database/sql"
   _ "github.com/lib/pq"
-  "Scontroller"
 )
 
 type Test struct{
