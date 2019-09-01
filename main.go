@@ -9,6 +9,7 @@ import (
   _ "github.com/heroku/x/hmetrics/onload"
   "database/sql"
   _ "github.com/lib/pq"
+  "github.com/gin-contrib/cors"
 )
 
 type Test struct{
@@ -28,15 +29,15 @@ func main() {
     log.Fatalf("Error opening database: %q", err)
   }
 
-  router := gin.New()
-  router.Use(gin.Logger())
-  router.LoadHTMLGlob("templates/*.tmpl.html")
-  router.Static("/static", "static")
+//  router := gin.New()
 
-  router.GET("/", func(c *gin.Context) {
-    c.HTML(http.StatusOK, "index.tmpl.html", nil)
-  })
-
+  router := gin.Default()
+  router.Use(cors.New(cors.Config{
+//        AllowOrigins: []string{"http://localhost:8889"},
+    AllowOrigins: []string{"*"},
+    AllowMethods: []string{"GET", "POST", "DELETE", "OPTIONS", "PUT"},
+    AllowHeaders: []string{"*"},
+  }))
   router.GET("/test", test)
   
   router.GET("/db", dbFunc(db))
