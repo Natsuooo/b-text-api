@@ -10,9 +10,13 @@ import (
   "database/sql"
   _ "github.com/lib/pq"
   
-  "github.com/Natsuooo/b-text-api/models"
+  
 )
 
+type Test struct{
+  Id int `json:"id"`
+  Content string `json:"content"`
+}
 
 func main() {
   port := os.Getenv("PORT")
@@ -38,6 +42,7 @@ func main() {
   router.GET("/test", test)
   
   router.GET("/db", dbFunc(db))
+  router.GET("/db_controller", contoller.dbFunc(db))
 
   router.Run(":" + port)
 }
