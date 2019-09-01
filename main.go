@@ -38,7 +38,7 @@ func main() {
     c.HTML(http.StatusOK, "index.tmpl.html", nil)
   })
 
-  router.GET("/test", test)
+//  router.GET("/test", test)
   
   router.GET("/db", dbFunc(db))
   
@@ -49,9 +49,9 @@ func main() {
   router.Run(":" + port)
 }
 
-func test(c *gin.Context){
-  c.String(http.StatusOK, "test")
-}
+//func test(c *gin.Context){
+//  c.String(http.StatusOK, "test")
+//}
 
 func dbFunc(db *sql.DB) gin.HandlerFunc{
   return func (c *gin.Context){
