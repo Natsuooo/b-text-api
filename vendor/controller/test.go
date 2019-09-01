@@ -6,7 +6,7 @@ import(
   "database/sql"
   _ "github.com/lib/pq"
   "net/http"
-  "github.com/models"
+  "models"
 )
 
 func dbFunc(db *sql.DB) gin.HandlerFunc{
