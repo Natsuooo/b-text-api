@@ -43,7 +43,7 @@ func main() {
   router.GET("/test", test)
   
   router.GET("/db", dbFunc(db))
-  router.GET("/db_controller", controller.dbFunc(db))
+  router.GET("/db_controller", dbFunc(db))
 
   router.Run(":" + port)
 }
