@@ -5,11 +5,13 @@ import(
   _ "github.com/heroku/x/hmetrics/onload"
   "database/sql"
   _ "github.com/lib/pq"
+  "net/http"
+  "github.com/models"
 )
 
 func dbFunc(db *sql.DB) gin.HandlerFunc{
   return func (c *gin.Context){
-    test := Test{}
+    test := models.Test{}
     db.QueryRow("SELECT content FROM test").Scan(&test.Content)
     c.JSON(http.StatusOK, test)
   }
