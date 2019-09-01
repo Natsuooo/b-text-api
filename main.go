@@ -9,7 +9,7 @@ import (
   _ "github.com/heroku/x/hmetrics/onload"
   "database/sql"
   _ "github.com/lib/pq"
-  "controller"
+  "github.com/heroku/go-getting-started/controller"
 )
 
 type Test struct{
