@@ -9,7 +9,7 @@ import (
   _ "github.com/heroku/x/hmetrics/onload"
   "database/sql"
   _ "github.com/lib/pq"
-  "github.com/heroku/go-getting-started/controller"
+  "Scontroller"
 )
 
 type Test struct{
@@ -44,7 +44,7 @@ func main() {
   
 //  controller := test.Controller{}
   
-  router.GET("/db_controller", controller.dbFunc(db))
+  router.GET("/db_controller", controller.DbFunc(db))
 
   router.Run(":" + port)
 }

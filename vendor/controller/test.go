@@ -9,7 +9,7 @@ import(
   "models"
 )
 
-func dbFunc(db *sql.DB) gin.HandlerFunc{
+func DbFunc(db *sql.DB) gin.HandlerFunc{
   return func (c *gin.Context){
     test := models.Test{}
     db.QueryRow("SELECT content FROM test").Scan(&test.Content)
