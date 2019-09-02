@@ -36,7 +36,6 @@ func main() {
   
   router.POST("/signup_with_img", signupWithImg(db))
   router.POST("/signup", signup(db))
-  router.POST("/logout", logout(db))
   router.GET("/user", user(db))
   router.GET("/get_user", getUser(db))
   router.POST("/sell", sell(db))
@@ -459,14 +458,6 @@ func sell(db *sql.DB) gin.HandlerFunc{
     db.Close()
   }
 
-}
-
-func logout(db *sql.DB) gin.HandlerFunc{
-  return func (c *gin.Context){
-    uid := c.PostForm("uid")
-    db.Exec("UPDATE users SET is_login=false WHERE uid=$1;", uid)
-    db.Close()
-  }
 }
 
 func getUser(db *sql.DB) gin.HandlerFunc{
