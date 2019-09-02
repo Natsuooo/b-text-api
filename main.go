@@ -384,19 +384,18 @@ func bookDetail(db *sql.DB) gin.HandlerFunc{
   }
 }
 
-func books(db *sql.DB) gin.HandlerFunc{
-  return func (c *gin.Context){
-    university := c.Query("university")
-    rows, _ := db.Query("SELECT id, user_id, google_image, original_image, title, state, price, note, liked, is_public, updated_at FROM books WHERE university=$1 ORDER BY created_at DESC", university)
-    var books []Book
-    for rows.Next(){
-      b:=Book{}
-      rows.Scan(&b.Id, &b.User_id, &b.Google_image, &b.Original_image, &b.Title, &b.State, &b.Price, &b.Note, &b.Liked, &b.Is_public, &b.Updated_at)
-      books = append(books, b)
-    }
-    db.Close()
-    c.JSON(http.StatusOK, books)
+func books (c *gin.Context){
+  db, _ := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+  university := c.Query("university")
+  rows, _ := db.Query("SELECT id, user_id, google_image, original_image, title, state, price, note, liked, is_public, updated_at FROM books WHERE university=$1 ORDER BY created_at DESC", university)
+  var books []Book
+  for rows.Next(){
+    b:=Book{}
+    rows.Scan(&b.Id, &b.User_id, &b.Google_image, &b.Original_image, &b.Title, &b.State, &b.Price, &b.Note, &b.Liked, &b.Is_public, &b.Updated_at)
+    books = append(books, b)
   }
+  db.Close()
+  c.JSON(http.StatusOK, books)
 }
 
 func restartSelling(db *sql.DB) gin.HandlerFunc{
@@ -498,26 +497,8 @@ func signupWithImg(db *sql.DB) gin.HandlerFunc{
   }
 }
 
-//func signup(db *sql.DB) gin.HandlerFunc{
-//  return func (c *gin.Context){
-//    stmt, err := db.Prepare("INSERT INTO users(uid, username, university, profile_image, sns_image, is_signup_detail) VALUES($1, $2, $3, $4, $5, $6) RETURNING uid")
-//    checkErr(err)
-//    uid := c.PostForm("uid")
-//    username := c.PostForm("username")
-//    university := c.PostForm("university")
-//    profile_image := c.PostForm("profile_image")
-//    sns_image := c.PostForm("sns_image")
-//    is_signup_detail := true
-//    stmt.Exec(uid, username, university, profile_image, sns_image, is_signup_detail)
-//    db.Close()
-//  }
-//}
-
 func signup (c *gin.Context){
-  db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
-  if err != nil {
-    log.Fatalf("Error opening database: %q", err)
-  }
+  db, _ := sql.Open("postgres", os.Getenv("DATABASE_URL"))
   stmt, err := db.Prepare("INSERT INTO users(uid, username, university, profile_image, sns_image, is_signup_detail) VALUES($1, $2, $3, $4, $5, $6) RETURNING uid")
   checkErr(err)
   uid := c.PostForm("uid")
