@@ -387,7 +387,7 @@ func bookDetail(db *sql.DB) gin.HandlerFunc{
 func books(db *sql.DB) gin.HandlerFunc{
   return func (c *gin.Context){
     university := c.Query("university")
-    rows, _ := db.Query("SELECT id, user_id, google_image, original_image, title, state, price, note, liked, is_public, updated_at FROM books WHERE university=$1", university)
+    rows, _ := db.Query("SELECT id, user_id, google_image, original_image, title, state, price, note, liked, is_public, updated_at FROM books WHERE university=$1 ORDER BY created_at DESC", university)
     var books []Book
     for rows.Next(){
       b:=Book{}
