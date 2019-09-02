@@ -35,7 +35,7 @@ func main() {
   }))
   
   router.POST("/signup_with_img", signupWithImg(db))
-  router.POST("/signup", signup(db))
+  router.POST("/signup", signup)
   router.GET("/user", user(db))
   router.GET("/get_user", getUser(db))
   router.POST("/sell", sell(db))
@@ -498,19 +498,36 @@ func signupWithImg(db *sql.DB) gin.HandlerFunc{
   }
 }
 
-func signup(db *sql.DB) gin.HandlerFunc{
-  return func (c *gin.Context){
-    stmt, err := db.Prepare("INSERT INTO users(uid, username, university, profile_image, sns_image, is_signup_detail) VALUES($1, $2, $3, $4, $5, $6) RETURNING uid")
-    checkErr(err)
-    uid := c.PostForm("uid")
-    username := c.PostForm("username")
-    university := c.PostForm("university")
-    profile_image := c.PostForm("profile_image")
-    sns_image := c.PostForm("sns_image")
-    is_signup_detail := true
-    stmt.Exec(uid, username, university, profile_image, sns_image, is_signup_detail)
-    db.Close()
+//func signup(db *sql.DB) gin.HandlerFunc{
+//  return func (c *gin.Context){
+//    stmt, err := db.Prepare("INSERT INTO users(uid, username, university, profile_image, sns_image, is_signup_detail) VALUES($1, $2, $3, $4, $5, $6) RETURNING uid")
+//    checkErr(err)
+//    uid := c.PostForm("uid")
+//    username := c.PostForm("username")
+//    university := c.PostForm("university")
+//    profile_image := c.PostForm("profile_image")
+//    sns_image := c.PostForm("sns_image")
+//    is_signup_detail := true
+//    stmt.Exec(uid, username, university, profile_image, sns_image, is_signup_detail)
+//    db.Close()
+//  }
+//}
+
+func signup (c *gin.Context){
+  db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+  if err != nil {
+    log.Fatalf("Error opening database: %q", err)
   }
+  stmt, err := db.Prepare("INSERT INTO users(uid, username, university, profile_image, sns_image, is_signup_detail) VALUES($1, $2, $3, $4, $5, $6) RETURNING uid")
+  checkErr(err)
+  uid := c.PostForm("uid")
+  username := c.PostForm("username")
+  university := c.PostForm("university")
+  profile_image := c.PostForm("profile_image")
+  sns_image := c.PostForm("sns_image")
+  is_signup_detail := true
+  stmt.Exec(uid, username, university, profile_image, sns_image, is_signup_detail)
+  db.Close()
 }
 
 func checkErr(err error) {
