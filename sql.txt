@@ -1,0 +1,77 @@
+CREATE TABLE users (
+  id SERIAL NOT NULL,
+  uid varchar(255) UNIQUE,
+  username varchar(255) NOT NULL,
+  university varchar(255) NOT NULL,
+  profile_image varchar(255) NOT NULL,
+  sns_image varchar(255),
+  is_signup_detail boolean NOT NULL DEFAULT false,
+  created_at timestamp not null default current_timestamp,
+  updated_at timestamp not null default current_timestamp
+);
+
+
+create function set_update_time() returns opaque as '
+  begin
+    new.updated_at := ''now'';
+    return new;
+  end;
+' language 'plpgsql';
+
+create trigger update_tri before update on users for each row
+  execute procedure set_update_time();
+  
+  
+CREATE TABLE books(
+  id SERIAL NOT NULL,
+  user_id INTEGER NOT NULL,
+  university varchar(255) NOT NULL,
+  google_image varchar(255),
+  original_image varchar(255),
+  title varchar(255),
+  state varchar(255),
+  price INTEGER,
+  note TEXT,
+  liked INTEGER NOT NULL DEFAULT 0,
+  is_public boolean NOT NULL DEFAULT true,
+  created_at timestamp not null default current_timestamp,
+  updated_at timestamp not null default current_timestamp
+);
+
+create trigger update_tri before update on books for each row
+  execute procedure set_update_time();
+  
+CREATE TABLE likes(
+  id SERIAL NOT NULL,
+  user_id INTEGER NOT NULL,
+  book_id INTEGER NOT NULL,
+  created_at timestamp not null default current_timestamp
+);
+
+CREATE TABLE messages(
+  id SERIAL NOT NULL,
+  book_id INTEGER NOT NULL,
+  from_user_id INTEGER NOT NULL,
+  to_user_id INTEGER NOT NULL,
+  content text NOT NULL,
+  is_read boolean NOT NULL DEFAULT false,
+  created_at timestamp not null
+);
+
+CREATE TABLE rates(
+  id SERIAL NOT NULL,
+  rating INTEGER NOT NULL,
+  from_user_id INTEGER NOT NULL,
+  to_user_id INTEGER NOT NULL
+);
+
+
+SELECT a.id, ARRAY(SELECT b.id FROM messages b WHERE b.book_id=a.id) AS messages_id FROM books a WHERE user_id=2 ORDER BY a.updated_at DESC
+
+SELECT DISTINCT a.id, a.uid, a.username, a.university, a.profile_image, a.sns_image, ARRAY(SELECT b.id FROM messages b WHERE a.id=b.from_user_id AND b.is_read=false AND to_user_id=2) AS unread_messages, (SELECT b.content from messages b WHERE a.id=b.from_user_id AND b.to_user_id=2 ORDER BY b.created_at DESC LIMIT 1) AS new_message FROM users a INNER JOIN messages b ON b.from_user_id=a.id WHERE b.book_id=4 AND b.to_user_id=2
+
+SELECT books.id, books.user_id, google_image, original_image, title, state, price, note, liked, is_public, updated_at FROM books INNER JOIN likes ON (books.id = likes.book_id) WHERE likes.user_id=$1 ORDER BY likes.created_at DESC
+
+SELECT a.id, a.user_id, a.google_image, a.original_image, a.title, a.state, a.price, a.note, a.is_public, a.updated_at, ARRAY(SELECT b.id FROM messages b WHERE b.book_id=a.id AND b.to_user_id=2 AND b.is_read=false) AS messages_id, (SELECT b.created_at FROM messages b WHERE b.book_id=a.id LIMIT 1) AS created_at FROM books a WHERE user_id=2 ORDER BY created_at DESC
+
+SELECT books.id, google_image, original_image, title, state, price, note, liked, is_public, books.created_at, messages.created_at FROM books INNER JOIN messages ON (books.id = messages.book_id) GROUP BY books.id WHERE messages.from_user_id=2  ORDER BY messages.created_at DESC;
