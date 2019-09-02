@@ -43,7 +43,7 @@ func main() {
   router.GET("/book_images/:original_image", bookImages)
   router.POST("/stop_selling", stopSelling(db))
   router.POST("/restart_selling", restartSelling(db))
-  router.GET("/books", books(db))
+  router.GET("/books", books)
   router.GET("/books/detail", bookDetail(db))
   router.POST("/likes/register", registerLike(db))
   router.POST("/likes/delete", deleteLike(db))
